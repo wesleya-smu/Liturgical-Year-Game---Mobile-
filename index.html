@@ -268,9 +268,11 @@ function initializePhase2Draggables() {
 
 
 function enableTouchSupport() {
+  console.log('Touch support initializing...');
   const draggables = document.querySelectorAll("#phase2-draggables .draggable");
 
   draggables.forEach(label => {
+    console.log("Binding touch listeners to", label.id);
     label.addEventListener("touchstart", (e) => {
       e.preventDefault();
       const touch = e.touches[0];
