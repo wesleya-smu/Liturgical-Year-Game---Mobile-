@@ -279,8 +279,9 @@ function initTouchListeners() {
       if (!draggedEl) return;
       let touch = e.touches[0];
       draggedEl.style.position = "absolute";
-      draggedEl.style.left = (touch.pageX - draggedEl.offsetWidth / 2) + "px";
-      draggedEl.style.top = (touch.pageY - draggedEl.offsetHeight / 2) + "px";
+      const offsetX = touch.pageX - draggedEl.offsetWidth / 2;
+      const offsetY = touch.pageY - draggedEl.offsetHeight / 2;
+      draggedEl.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
       draggedEl.style.zIndex = 1000;
     });
 
