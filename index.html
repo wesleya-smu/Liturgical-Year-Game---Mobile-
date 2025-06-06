@@ -66,7 +66,7 @@
   }
 </style>
 </head>
-<body>
+<body><div id="debug-log" style="position:fixed; bottom:0; left:0; width:100%; max-height:150px; overflow:auto; background:#111; color:#0f0; font:12px monospace; padding:4px; z-index:9999;"></div>
 <div class="wrapper"><h2 id="phase2-title" style="text-align: center; display: none;">Liturgical Year Game: Days</h2><p id="phase2-instructions" style="text-align: center; max-width: 800px; margin: 0 auto 1rem auto; display: none;">As you did with the seasons, in this phase of the game drag and drop the individual days to their appropriate markers around the ellipse. Some of the days are indicated by their names and others by themes associated with the day.</p><table id="phase2-table" style="margin: 0 auto; margin-bottom: 1rem; display: none;"><tr><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">All Saints (ALLS)</td><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">Ascension (ASCN)</td><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">Ash Wednesday (ASHW)</td><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">Baptism of the Lord (BAPT)</td><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">Christmas (CHRI)</td><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">Easter Sunday (EAST)</td><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">Epiphany (EPIP)</td></tr><tr><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">Good Friday (GOOD)</td><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">Jesus’ Childhood (JCHD)</td><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">Jesus’ Coming Birth (JBRH)</td><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">Jesus’ Coming Ministry (JMIN)</td><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">Jesus’ Second Coming (JSEC)</td><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">Jesus’ Temptation (JTEM)</td><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">Maundy Thursday (MAUN)</td></tr><tr><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">Palm/Passion Sunday (PALM)</td><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">Pentecost (PENT)</td><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">Reformation Day (REFD)</td><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">Reign of Christ (REIG)</td><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">Transfiguration (TRAN)</td><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">Trinity Sunday (TRIN)</td><td style="padding: 0.25rem 1rem; font-size: 0.9rem; text-align: center;">World Communion (WORL)</td></tr></table><div id="phase2-draggables" style="display: none; text-align: center; margin-top: 1rem;"><div style="margin-bottom: 0.5rem;"><div class="draggable" draggable="true" id="label-ALLS" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">ALLS</div><div class="draggable" draggable="true" id="label-ASCN" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">ASCN</div><div class="draggable" draggable="true" id="label-ASHW" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">ASHW</div><div class="draggable" draggable="true" id="label-BAPT" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">BAPT</div><div class="draggable" draggable="true" id="label-CHRI" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">CHRI</div><div class="draggable" draggable="true" id="label-EAST" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">EAST</div><div class="draggable" draggable="true" id="label-EPIP" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">EPIP</div><div class="draggable" draggable="true" id="label-GOOD" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">GOOD</div><div class="draggable" draggable="true" id="label-JCHD" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">JCHD</div><div class="draggable" draggable="true" id="label-JBRH" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">JBRH</div><div class="draggable" draggable="true" id="label-JMIN" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">JMIN</div></div><div style="margin-bottom: 0.5rem;"><div class="draggable" draggable="true" id="label-JSEC" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">JSEC</div><div class="draggable" draggable="true" id="label-JTEM" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">JTEM</div><div class="draggable" draggable="true" id="label-MAUN" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">MAUN</div><div class="draggable" draggable="true" id="label-PALM" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">PALM</div><div class="draggable" draggable="true" id="label-PENT" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">PENT</div><div class="draggable" draggable="true" id="label-REFD" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">REFD</div><div class="draggable" draggable="true" id="label-REIG" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">REIG</div><div class="draggable" draggable="true" id="label-TRAN" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">TRAN</div><div class="draggable" draggable="true" id="label-TRIN" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">TRIN</div><div class="draggable" draggable="true" id="label-WORL" style="display: inline-block; padding: 0.25rem 0.5rem; margin: 0.25rem; background-color: #eef; border: 1px solid #99c; font-size: 0.8rem; cursor: grab;">WORL</div></div></div><h2 id="phase1-title" style="text-align: center; margin-bottom: 0.5rem;">Liturgical Year Game: Seasons</h2><p id="phase1-instructions" style="text-align: center; max-width: 800px; margin: 0 auto 1rem auto;">This game tests your knowledge of the sequence of the liturgical seasons during the church year. Drag the abbreviations for the following seasons to the proper colored band in the ellipse. Make sure to drag the abbreviation to the circle in the band. The abbreviations for the seasons are: Advent (ADV), Christmas (CHR), Easter (EAS), Lent (LEN), Ordinary Time - Sundays after Epiphany (OTE), and Ordinary Time - Sundays after Pentecost (OTP).</p>
 <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 0px;">
 <div class="draggable" draggable="true" id="label-Advent">ADV</div><div class="draggable" draggable="true" id="label-Christmas">CHR</div><div class="draggable" draggable="true" id="label-EAS">EAS</div><div class="draggable" draggable="true" id="label-LEN">LEN</div><div class="draggable" draggable="true" id="label-OTE">OTE</div><div class="draggable" draggable="true" id="label-OTP">OTP</div></div>
@@ -162,12 +162,12 @@ function checkPhaseOneCompletion() {
   const allLocked = phase1Labels.every(id => {
     const el = document.getElementById(id);
     const isLocked = el && el.getAttribute("draggable") === "false";
-    console.log("Checking", id, "->", isLocked);
+    document.getElementById("debug-log").innerHTML += (Array.from(arguments).join(" ") + "<br>")("Checking", id, "->", isLocked);
     return isLocked;
   });
-  console.log("All locked:", allLocked);
+  document.getElementById("debug-log").innerHTML += (Array.from(arguments).join(" ") + "<br>")("All locked:", allLocked);
   if (allLocked) {
-    console.log("Triggering phase 2 reveal.");
+    document.getElementById("debug-log").innerHTML += (Array.from(arguments).join(" ") + "<br>")("Triggering phase 2 reveal.");
     document.getElementById("phase1-title").style.display = "none";
     document.getElementById("phase1-instructions").style.display = "none";
     document.getElementById("phase2-title").style.display = "block";
@@ -268,11 +268,11 @@ function initializePhase2Draggables() {
 
 
 function enableTouchSupport() {
-  console.log('Touch support initializing...');
+  document.getElementById("debug-log").innerHTML += (Array.from(arguments).join(" ") + "<br>")('Touch support initializing...');
   const draggables = document.querySelectorAll("#phase2-draggables .draggable");
 
   draggables.forEach(label => {
-    console.log("Binding touch listeners to", label.id);
+    document.getElementById("debug-log").innerHTML += (Array.from(arguments).join(" ") + "<br>")("Binding touch listeners to", label.id);
     label.addEventListener("touchstart", (e) => {
       e.preventDefault();
       const touch = e.touches[0];
@@ -348,6 +348,28 @@ function enableTouchSupport() {
     });
   });
 }
+
+
+
+window.addEventListener("load", () => {
+  // Skip directly to Phase 2
+  document.getElementById("phase1-title").style.display = "none";
+  document.getElementById("phase1-instructions").style.display = "none";
+
+  document.getElementById("phase2-title").style.display = "block";
+  document.getElementById("phase2-instructions").style.display = "block";
+  document.getElementById("phase2-table").style.display = "block";
+  document.getElementById("phase2-draggables").style.display = "grid";
+
+  document.querySelectorAll(".dropzone").forEach(zone => {
+    if (zone.hasAttribute("data-label")) {
+      zone.style.display = "inline";
+    }
+  });
+
+  initializePhase2Draggables();
+  enableTouchSupport();
+});
 </script>
 <div id="congrats-message" style="display:none; position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
 font-size: 64px; font-weight: bold; color: green; z-index: 1000; animation: flash 1s infinite;">CONGRATS!</div>
