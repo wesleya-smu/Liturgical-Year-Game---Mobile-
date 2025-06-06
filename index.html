@@ -87,7 +87,8 @@
 <div id="red-x">✖</div>
 <audio id="ding" preload="auto" src="ding.mp3"></audio>
 <audio id="buzzer" preload="auto" src="buzzer.mp3"></audio>
-<script>
+<script>let draggedEl;
+
     const labels = document.querySelectorAll(".draggable");
     const dropZones = {
       "label-Advent": document.getElementById("zone-Advent"),
@@ -266,76 +267,83 @@ function initializePhase2Draggables() {
 
 
 
-// Touch support for mobile drag and drop (Phase 2)
-document.querySelectorAll("#phase2-draggables .draggable").forEach(el => {
-  el.addEventListener('touchstart', function(e) {
-    draggedEl = el;
-    e.preventDefault();
-  });
-
-  el.addEventListener('touchmove', function(e) {
-    if (!draggedEl) return;
-    let touch = e.touches[0];
-    draggedEl.style.position = 'absolute';
-    draggedEl.style.left = (touch.pageX - draggedEl.offsetWidth / 2) + 'px';
-    draggedEl.style.top = (touch.pageY - draggedEl.offsetHeight / 2) + 'px';
-    draggedEl.style.zIndex = 1000;
-  });
-
-  el.addEventListener('touchend', function(e) {
-    if (!draggedEl) return;
-    const dropzones = document.querySelectorAll('.dropzone');
-    const draggedRect = draggedEl.getBoundingClientRect();
-    let placed = false;
-
-    dropzones.forEach(dropzone => {
-      if (dropzone.style.display !== "inline") return;
-      const zoneRect = dropzone.getBoundingClientRect();
-      if (
-        draggedRect.left < zoneRect.right &&
-        draggedRect.right > zoneRect.left &&
-        draggedRect.top < zoneRect.bottom &&
-        draggedRect.bottom > zoneRect.top
-      ) {
-        const expected = dropzone.getAttribute("data-label");
-        if (draggedEl.id === "label-" + expected) {
-          dropzone.setAttribute("fill", "#cfc");
-          draggedEl.setAttribute("draggable", "false");
-          draggedEl.style.backgroundColor = "#cfc";
-          draggedEl.style.cursor = "default";
-
-          const container = document.getElementById("svg-container");
-          const containerBox = container.getBoundingClientRect();
-          const zoneBox = dropzone.getBoundingClientRect();
-
-          container.appendChild(draggedEl);
-          draggedEl.style.left = (zoneBox.left - containerBox.left + zoneBox.width / 2 - draggedEl.offsetWidth / 2) + "px";
-          draggedEl.style.top = (zoneBox.top - containerBox.top + zoneBox.height / 2 - draggedEl.offsetHeight / 2) + "px";
-          draggedEl.style.zIndex = 20;
-
-          document.getElementById("ding").play();
-          placed = true;
-
-          const allDayZones = Array.from(document.querySelectorAll('.dropzone[data-label]')).filter(z => z.style.display === "inline");
-          const allLocked = allDayZones.every(zone => {
-            const lbl = document.getElementById("label-" + zone.getAttribute("data-label"));
-            return lbl && lbl.getAttribute("draggable") === "false";
-          });
-          if (allLocked) {
-            document.getElementById("congrats-message").style.display = "block";
-          }
-        } else {
-          document.getElementById("buzzer").play();
-        }
-      }
+// Mobile touch support for all draggable labels
+function initTouchListeners() {
+  document.querySelectorAll(".draggable").forEach(el => {
+    el.addEventListener("touchstart", function(e) {
+      draggedEl = el;
+      e.preventDefault();
     });
 
-    if (!placed) {
-      document.getElementById("buzzer").play();
-    }
+    el.addEventListener("touchmove", function(e) {
+      if (!draggedEl) return;
+      let touch = e.touches[0];
+      draggedEl.style.position = "absolute";
+      draggedEl.style.left = (touch.pageX - draggedEl.offsetWidth / 2) + "px";
+      draggedEl.style.top = (touch.pageY - draggedEl.offsetHeight / 2) + "px";
+      draggedEl.style.zIndex = 1000;
+    });
 
-    draggedEl = null;
+    el.addEventListener("touchend", function(e) {
+      if (!draggedEl) return;
+      const dropzones = document.querySelectorAll(".dropzone");
+      const draggedRect = draggedEl.getBoundingClientRect();
+      let placed = false;
+
+      dropzones.forEach(dropzone => {
+        if (dropzone.style.display !== "inline") return;
+        const zoneRect = dropzone.getBoundingClientRect();
+        if (
+          draggedRect.left < zoneRect.right &&
+          draggedRect.right > zoneRect.left &&
+          draggedRect.top < zoneRect.bottom &&
+          draggedRect.bottom > zoneRect.top
+        ) {
+          const expected = dropzone.getAttribute("data-label");
+          if (draggedEl.id === "label-" + expected) {
+            dropzone.setAttribute("fill", "#cfc");
+            draggedEl.setAttribute("draggable", "false");
+            draggedEl.style.backgroundColor = "#cfc";
+            draggedEl.style.cursor = "default";
+
+            const container = document.getElementById("svg-container");
+            const containerBox = container.getBoundingClientRect();
+            const zoneBox = dropzone.getBoundingClientRect();
+
+            container.appendChild(draggedEl);
+            draggedEl.style.left = (zoneBox.left - containerBox.left + zoneBox.width / 2 - draggedEl.offsetWidth / 2) + "px";
+            draggedEl.style.top = (zoneBox.top - containerBox.top + zoneBox.height / 2 - draggedEl.offsetHeight / 2) + "px";
+            draggedEl.style.zIndex = 20;
+
+            document.getElementById("ding").play();
+            placed = true;
+
+            const allDayZones = Array.from(document.querySelectorAll('.dropzone[data-label]')).filter(z => z.style.display === "inline");
+            const allLocked = allDayZones.every(zone => {
+              const lbl = document.getElementById("label-" + zone.getAttribute("data-label"));
+              return lbl && lbl.getAttribute("draggable") === "false";
+            });
+            if (allLocked) {
+              document.getElementById("congrats-message").style.display = "block";
+            }
+          } else {
+            document.getElementById("buzzer").play();
+          }
+        }
+      });
+
+      if (!placed) {
+        document.getElementById("buzzer").play();
+      }
+
+      draggedEl = null;
+    });
   });
+}
+
+// Run after content is loaded and DOM is ready
+window.addEventListener("load", () => {
+  initTouchListeners();
 });
 </script>
 <div id="congrats-message" style="display:none; position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
