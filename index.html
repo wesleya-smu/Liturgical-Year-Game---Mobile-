@@ -87,8 +87,7 @@
 <div id="red-x">✖</div>
 <audio id="ding" preload="auto" src="ding.mp3"></audio>
 <audio id="buzzer" preload="auto" src="buzzer.mp3"></audio>
-<script>let draggedEl;
-
+<script>
     const labels = document.querySelectorAll(".draggable");
     const dropZones = {
       "label-Advent": document.getElementById("zone-Advent"),
@@ -198,6 +197,7 @@ function checkPhaseOneCompletion() {
     document.getElementById("drop-BAPT").style.display = "inline";
     initializePhase2Dropzones();
     initializePhase2Draggables();
+    enableTouchSupport();
   }
 }
 
@@ -267,54 +267,61 @@ function initializePhase2Draggables() {
 
 
 
-// Mobile touch support for all draggable labels
-function initTouchListeners() {
-  document.querySelectorAll(".draggable").forEach(el => {
-    el.addEventListener("touchstart", function(e) {
-      draggedEl = el;
+function enableTouchSupport() {
+  const draggables = document.querySelectorAll("#phase2-draggables .draggable");
+
+  draggables.forEach(label => {
+    label.addEventListener("touchstart", (e) => {
       e.preventDefault();
+      const touch = e.touches[0];
+      label.dataset.touchStartX = touch.clientX;
+      label.dataset.touchStartY = touch.clientY;
     });
 
-    el.addEventListener("touchmove", function(e) {
-      if (!draggedEl) return;
-      let touch = e.touches[0];
-      draggedEl.style.position = "absolute";
-      const offsetX = touch.pageX - draggedEl.offsetWidth / 2;
-      const offsetY = touch.pageY - draggedEl.offsetHeight / 2;
-      draggedEl.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-      draggedEl.style.zIndex = 1000;
+    label.addEventListener("touchmove", (e) => {
+      const touch = e.touches[0];
+      const moveX = touch.clientX - label.dataset.touchStartX;
+      const moveY = touch.clientY - label.dataset.touchStartY;
+
+      label.style.position = "absolute";
+      label.style.left = touch.pageX - label.offsetWidth / 2 + "px";
+      label.style.top = touch.pageY - label.offsetHeight / 2 + "px";
+      label.style.zIndex = 1000;
     });
 
-    el.addEventListener("touchend", function(e) {
-      if (!draggedEl) return;
-      const dropzones = document.querySelectorAll(".dropzone");
-      const draggedRect = draggedEl.getBoundingClientRect();
+    label.addEventListener("touchend", (e) => {
+      const touch = e.changedTouches[0];
+      const labelRect = label.getBoundingClientRect();
+      const centerX = labelRect.left + labelRect.width / 2;
+      const centerY = labelRect.top + labelRect.height / 2;
+
       let placed = false;
 
-      dropzones.forEach(dropzone => {
-        if (dropzone.style.display !== "inline") return;
-        const zoneRect = dropzone.getBoundingClientRect();
-        if (
-          draggedRect.left < zoneRect.right &&
-          draggedRect.right > zoneRect.left &&
-          draggedRect.top < zoneRect.bottom &&
-          draggedRect.bottom > zoneRect.top
-        ) {
-          const expected = dropzone.getAttribute("data-label");
-          if (draggedEl.id === "label-" + expected) {
-            dropzone.setAttribute("fill", "#cfc");
-            draggedEl.setAttribute("draggable", "false");
-            draggedEl.style.backgroundColor = "#cfc";
-            draggedEl.style.cursor = "default";
+      document.querySelectorAll(".dropzone").forEach(drop => {
+        if (drop.style.display !== "inline") return;
+        const dropRect = drop.getBoundingClientRect();
+        const dropCX = dropRect.left + dropRect.width / 2;
+        const dropCY = dropRect.top + dropRect.height / 2;
+        const dx = centerX - dropCX;
+        const dy = centerY - dropCY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < 35) {
+          const correctLabel = drop.getAttribute("data-label");
+          if (label.id === "label-" + correctLabel) {
+            drop.setAttribute("fill", "#cfc");
+            label.setAttribute("draggable", "false");
+            label.style.backgroundColor = "#cfc";
+            label.style.cursor = "default";
 
             const container = document.getElementById("svg-container");
             const containerBox = container.getBoundingClientRect();
-            const zoneBox = dropzone.getBoundingClientRect();
+            const zoneBox = drop.getBoundingClientRect();
 
-            container.appendChild(draggedEl);
-            draggedEl.style.left = (zoneBox.left - containerBox.left + zoneBox.width / 2 - draggedEl.offsetWidth / 2) + "px";
-            draggedEl.style.top = (zoneBox.top - containerBox.top + zoneBox.height / 2 - draggedEl.offsetHeight / 2) + "px";
-            draggedEl.style.zIndex = 20;
+            container.appendChild(label);
+            label.style.left = (zoneBox.left - containerBox.left + zoneBox.width / 2 - label.offsetWidth / 2) + "px";
+            label.style.top = (zoneBox.top - containerBox.top + zoneBox.height / 2 - label.offsetHeight / 2) + "px";
+            label.style.zIndex = 20;
 
             document.getElementById("ding").play();
             placed = true;
@@ -336,16 +343,9 @@ function initTouchListeners() {
       if (!placed) {
         document.getElementById("buzzer").play();
       }
-
-      draggedEl = null;
     });
   });
 }
-
-// Run after content is loaded and DOM is ready
-window.addEventListener("load", () => {
-  initTouchListeners();
-});
 </script>
 <div id="congrats-message" style="display:none; position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
 font-size: 64px; font-weight: bold; color: green; z-index: 1000; animation: flash 1s infinite;">CONGRATS!</div>
