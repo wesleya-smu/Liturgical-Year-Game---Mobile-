@@ -270,6 +270,10 @@ function initializePhase2Draggables() {
 function enableTouchSupport() {
   document.getElementById("debug-log").innerHTML += (Array.from(arguments).join(" ") + "<br>")('Touch support initializing...');
   const draggables = document.querySelectorAll("#phase2-draggables .draggable");
+  if (draggables.length === 0) {
+    document.getElementById("debug-log").innerHTML += "❌ No draggable labels found for touch binding<br>";
+    return;
+  }
 
   draggables.forEach(label => {
     document.getElementById("debug-log").innerHTML += (Array.from(arguments).join(" ") + "<br>")("Binding touch listeners to", label.id);
@@ -368,7 +372,7 @@ window.addEventListener("load", () => {
   });
 
   initializePhase2Draggables();
-  enableTouchSupport();
+  setTimeout(() => { enableTouchSupport(); }, 300);
 });
 </script>
 <div id="congrats-message" style="display:none; position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
