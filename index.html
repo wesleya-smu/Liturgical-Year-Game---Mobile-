@@ -266,9 +266,82 @@ function initializePhase2Draggables() {
   });
 }
 
-// Mobile touch support for draggable labels
+
+
+// Mobile touch support for draggable labels with movement detection
 labels.forEach(label => {
   let offsetX, offsetY;
+  let hasMoved = false;
+
+  label.addEventListener("touchstart", e => {
+    if (label.getAttribute("draggable") === "false") return;
+    currentDrag = label;
+    const touch = e.touches[0];
+    offsetX = touch.clientX - label.getBoundingClientRect().left;
+    offsetY = touch.clientY - label.getBoundingClientRect().top;
+    label.style.position = 'absolute';
+    label.style.zIndex = 20;
+    hasMoved = false;
+  });
+
+  label.addEventListener("touchmove", e => {
+    if (!currentDrag) return;
+    const touch = e.touches[0];
+    const container = document.getElementById('svg-container');
+    const containerBox = container.getBoundingClientRect();
+    currentDrag.style.left = (touch.clientX - containerBox.left - offsetX) + 'px';
+    currentDrag.style.top = (touch.clientY - containerBox.top - offsetY) + 'px';
+    hasMoved = true;
+  });
+
+  label.addEventListener("touchend", e => {
+    if (!hasMoved || !currentDrag) {
+      currentDrag = null;
+      return;
+    }
+
+    const svg = document.querySelector(".overlay");
+    const pt = svg.createSVGPoint();
+    pt.x = e.changedTouches[0].clientX;
+    pt.y = e.changedTouches[0].clientY;
+    const dropPoint = pt.matrixTransform(svg.getScreenCTM().inverse());
+
+    const draggedId = currentDrag.id;
+    const zone = dropZones[draggedId];
+    if (!zone) {
+      currentDrag = null;
+      return;
+    }
+
+    const cx = parseFloat(zone.getAttribute("cx"));
+    const cy = parseFloat(zone.getAttribute("cy"));
+    const r = parseFloat(zone.getAttribute("r"));
+
+    const dx = dropPoint.x - cx;
+    const dy = dropPoint.y - cy;
+    const inside = dx * dx + dy * dy <= r * r;
+
+    if (inside) {
+      ding.play();
+      const zoneBox = zone.getBoundingClientRect();
+      const container = document.getElementById('svg-container');
+      const containerBox = container.getBoundingClientRect();
+
+      container.appendChild(currentDrag);
+      currentDrag.style.left = (zoneBox.left - containerBox.left + zoneBox.width / 2 - currentDrag.offsetWidth / 2) + 'px';
+      currentDrag.style.top = (zoneBox.top - containerBox.top + zoneBox.height / 2 - currentDrag.offsetHeight / 2) + 'px';
+      currentDrag.setAttribute('draggable', 'false');
+
+      checkPhaseOneCompletion();
+    } else {
+      buzzer.play();
+      showRedX();
+    }
+
+    currentDrag = null;
+  });
+});
+
 
   label.addEventListener("touchstart", e => {
     if (label.getAttribute("draggable") === "false") return;
