@@ -3,15 +3,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Liturgical Year Game - Click Version</title>
+  <title>Liturgical Year Game - Click Version (Corrected)</title>
   <style>
-    body { font-family: sans-serif; text-align: center; }
-    #svg-container { position: relative; display: inline-block; }
-    svg.overlay { position: absolute; top: 0; left: 0; pointer-events: none; }
+    body { font-family: sans-serif; text-align: center; margin: 0; padding: 0; }
+    #svg-container { position: relative; width: 100%; max-width: 1000px; margin: auto; }
+    svg.overlay { position: absolute; top: 0; left: 0; pointer-events: auto; }
     .label { margin: 5px; padding: 10px 20px; background: #f0f0f0; display: inline-block; cursor: pointer; border: 2px solid #ccc; }
     .label.selected { background: #d0eaff; border-color: #0077cc; }
     .locked { background: #c3f5c3 !important; cursor: default; }
-    #labels { margin-top: 20px; }
+    #labels { margin: 20px auto; width: fit-content; }
     .flash { font-size: 48px; color: green; animation: flash 1s ease-out; }
     @keyframes flash {
       0% { opacity: 0; transform: scale(0.5); }
@@ -24,8 +24,8 @@
   <h1>Liturgical Year Game: Seasons (Click Version)</h1>
   <p>Tap a season abbreviation below, then tap the correct circle in the diagram to place it.</p>
   <div id="svg-container">
-    <img src="calendar.svg" width="800" />
-    <svg class="overlay" width="800" height="545" viewBox="0 0 2400 1633">
+    <svg viewBox="0 0 2400 1633" width="100%" class="overlay">
+      <image href="calendar.svg" x="0" y="0" width="2400" height="1633" />
       <!-- Drop zones -->
       <circle id="ADV_zone" cx="1220" cy="238" r="35" fill="none" stroke="blue" stroke-dasharray="5,3" stroke-width="4"/>
       <circle id="CHR_zone" cx="1250" cy="170" r="35" fill="none" stroke="blue" stroke-dasharray="5,3" stroke-width="4"/>
@@ -73,15 +73,12 @@
         const id = zone.id.split("_")[0];
         const label = document.querySelector(`.label[data-id="${selected}"]`);
         if (id === selected) {
-          // Correct
           ding.play();
           label.classList.remove("selected");
           label.classList.add("locked");
           label.innerText = selected;
           selected = null;
           placed.add(id);
-
-          // Optional: render label in circle visually (can be added with absolute SVG text)
 
           if (placed.size === 6) {
             const flash = document.getElementById("flash");
