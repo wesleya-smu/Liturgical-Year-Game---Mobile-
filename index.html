@@ -403,6 +403,13 @@ labels.forEach(label => {
     currentDrag = null;
   });
 });
+
+// Disable native draggable for touch devices to ensure touch events work
+if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+  document.querySelectorAll('.draggable-label').forEach(label => {
+    label.setAttribute('draggable', 'false');
+  });
+}
 </script>
 
 <div id="congrats-message" style="display:none; position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
